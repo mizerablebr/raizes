@@ -13,4 +13,9 @@ public class RaizesApplicationTests {
     public void contextLoads() {
     }
 
+    @Test
+    public void equacaoTest() {
+        // Equação x^3 -9x + 3
+        Equacao equacao = new Equacao(0, 0, 1, 0, -9, 3, -3);
+    }
 }

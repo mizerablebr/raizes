@@ -1,15 +1,28 @@
 package br.unifil.raizes;
 
+import java.util.List;
+
 public class Equacao {
-    private float x0;
-    private float x1;
-    private float x2;
-    private float x3;
-    private float x4;
     private float x5;
+    private float x4;
+    private float x3;
+    private float x2;
+    private float x1;
+    private float x0;
     private int epsilon;
+    private List<Raiz> raizes;
 
     public Equacao() {
+    }
+
+    public Equacao(float x5, float x4, float x3, float x2, float x1, float x0, int epsilon) {
+        this.x5 = x5;
+        this.x4 = x4;
+        this.x3 = x3;
+        this.x2 = x2;
+        this.x1 = x1;
+        this.x0 = x0;
+        this.epsilon = epsilon;
     }
 
     public float getX0() {
@@ -68,6 +81,14 @@ public class Equacao {
         this.epsilon = epsilon;
     }
 
+    public List<Raiz> getRaizes() {
+        return raizes;
+    }
+
+    public void setRaizes(List<Raiz> raizes) {
+        this.raizes = raizes;
+    }
+
     @Override
     public String toString() {
         return "Equacao{" +
@@ -79,5 +100,38 @@ public class Equacao {
                 ", x5=" + x5 +
                 ", epsilon=" + epsilon +
                 '}';
+    }
+
+    public class Raiz {
+        private float intervaloA;
+        private float intervaloB;
+        private float valor;
+
+        public Raiz() {
+        }
+
+        public float getIntervaloA() {
+            return intervaloA;
+        }
+
+        public void setIntervaloA(float intervaloA) {
+            this.intervaloA = intervaloA;
+        }
+
+        public float getIntervaloB() {
+            return intervaloB;
+        }
+
+        public void setIntervaloB(float intervaloB) {
+            this.intervaloB = intervaloB;
+        }
+
+        public float getValor() {
+            return valor;
+        }
+
+        public void setValor(float valor) {
+            this.valor = valor;
+        }
     }
 }
