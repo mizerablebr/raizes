@@ -170,7 +170,7 @@ public class Equacao {
         private float intervaloB;
         private float valor;
         private Equacao equacao;
-        private static final Function<Raiz, Float> funcaoValor = r -> (r.getIntervaloA() + r.getIntervaloB()) / 2;
+        private List<Raiz> anteriores;
 
         public Raiz() {
         }
@@ -179,7 +179,14 @@ public class Equacao {
             this.intervaloA = intervaloA;
             this.intervaloB = intervaloB;
             this.equacao = equacao;
+            this.anteriores = new ArrayList<>();
             calculaValor();
+        }
+
+        public Raiz(float intervaloA, float intervaloB, float valor) {
+            this.intervaloA = intervaloA;
+            this.intervaloB = intervaloB;
+            this.valor = valor;
         }
 
         public float getIntervaloA() {
@@ -208,8 +215,28 @@ public class Equacao {
             this.valor = valor;
         }
 
+        public Equacao getEquacao() {
+            return equacao;
+        }
+
+        public void setEquacao(Equacao equacao) {
+            this.equacao = equacao;
+        }
+
+        public List<Raiz> getAnteriores() {
+            return anteriores;
+        }
+
+        public void setAnteriores(List<Raiz> anteriores) {
+            this.anteriores = anteriores;
+        }
+
         private void calculaValor() {
-            this.valor = (getIntervaloA() + getIntervaloB()) /2;
+            float novoValor = (getIntervaloA() + getIntervaloB()) /2;
+            if (novoValor != this.valor) {
+                this.anteriores.add(new Raiz(getIntervaloA(), getIntervaloB(), equacao.calculaResutado(this.valor)));
+                this.valor = novoValor;
+            }
         }
 
         @Override
@@ -218,6 +245,7 @@ public class Equacao {
                     "intervaloA=" + intervaloA +
                     ", intervaloB=" + intervaloB +
                     ", valor=" + valor +
+                    ", anteriores=" + anteriores +
                     '}';
         }
     }
