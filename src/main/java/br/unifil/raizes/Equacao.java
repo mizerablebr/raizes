@@ -1,8 +1,13 @@
 package br.unifil.raizes;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
 public class Equacao {
+    public static final int inicioTestes = -5;
+    public static final int fimTestes = 5;
     private float x5;
     private float x4;
     private float x3;
@@ -89,25 +94,75 @@ public class Equacao {
         this.raizes = raizes;
     }
 
+    public int quantidadeMaximaRaizes() {
+        if (x5 > 0) return 5;
+        if (x4 > 0) return 4;
+        if (x3 > 0) return 3;
+        if (x2 > 0) return 2;
+        if (x1 > 0) return 1;
+        return 0;
+    }
+
+    public float calculaResutado(float valorTeste) {
+        float resultado = 0;
+        resultado += getX5() * (Math.pow(valorTeste,5));
+        resultado += getX4() * (Math.pow(valorTeste,4));
+        resultado += getX3() * (Math.pow(valorTeste,3));
+        resultado += getX2() * (Math.pow(valorTeste,2));
+        resultado += getX1() * (Math.pow(valorTeste,1));
+        resultado += getX0() * (Math.pow(valorTeste,0));
+        return resultado;
+    }
+
+    /**
+     * Verifica o sinal do resultado
+     * @param valorTeste valor que será testado na equação
+     * @return true para resultado positivo e false para resultado negativo
+     */
+    public boolean sinalResultado(int valorTeste) {
+        return calculaResutado(valorTeste) > 0;
+    }
+
+    public void calculaRaizes() {
+        List<Equacao.Raiz> raizes = new ArrayList<>();
+        int a = inicioTestes;
+        for (int n = inicioTestes; n <= fimTestes; n++) {
+            if (this.sinalResultado(a) != this.sinalResultado(n)) {
+                a = n;
+                BiFunction<Float, Float, Float> media = (x, y) -> ((x + y) / 2);
+                raizes.add(new Equacao.Raiz(n-1, n, calculaResutado(media.apply(n-1f, n - 0f))));
+            }
+        }
+        setRaizes(raizes);
+    }
+
     @Override
     public String toString() {
         return "Equacao{" +
-                "x0=" + x0 +
-                ", x1=" + x1 +
-                ", x2=" + x2 +
-                ", x3=" + x3 +
+                "x5=" + x5 +
                 ", x4=" + x4 +
-                ", x5=" + x5 +
+                ", x3=" + x3 +
+                ", x2=" + x2 +
+                ", x1=" + x1 +
+                ", x0=" + x0 +
                 ", epsilon=" + epsilon +
+                ", raizes=" + raizes +
+                ", quantidadeMaximaRaizes=" + quantidadeMaximaRaizes() +
                 '}';
     }
 
-    public class Raiz {
+    public static class Raiz {
         private float intervaloA;
         private float intervaloB;
         private float valor;
 
         public Raiz() {
+        }
+
+        public Raiz(float intervaloA, float intervaloB, float valor) {
+            this.intervaloA = intervaloA;
+            this.intervaloB = intervaloB;
+            this.valor = valor;
         }
 
         public float getIntervaloA() {
@@ -132,6 +187,15 @@ public class Equacao {
 
         public void setValor(float valor) {
             this.valor = valor;
+        }
+
+        @Override
+        public String toString() {
+            return "Raiz{" +
+                    "intervaloA=" + intervaloA +
+                    ", intervaloB=" + intervaloB +
+                    ", valor=" + valor +
+                    '}';
         }
     }
 }
