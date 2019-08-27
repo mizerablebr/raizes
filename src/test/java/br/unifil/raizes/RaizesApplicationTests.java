@@ -28,6 +28,9 @@ public class RaizesApplicationTests {
     public void equacaoTest() {
         equacao.calculaRaizes();
         System.out.println(equacao);
+        // Melhorar Raízes
+        equacao.melhorarRaizes();
+        System.out.println(equacao);
     }
 
     @Test

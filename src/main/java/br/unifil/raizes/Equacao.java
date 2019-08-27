@@ -3,6 +3,7 @@ package br.unifil.raizes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class Equacao {
@@ -119,7 +120,7 @@ public class Equacao {
      * @param valorTeste valor que será testado na equação
      * @return true para resultado positivo e false para resultado negativo
      */
-    public boolean sinalResultado(int valorTeste) {
+    public boolean sinalResultado(float valorTeste) {
         return calculaResutado(valorTeste) > 0;
     }
 
@@ -130,10 +131,23 @@ public class Equacao {
             if (this.sinalResultado(a) != this.sinalResultado(n)) {
                 a = n;
                 BiFunction<Float, Float, Float> media = (x, y) -> ((x + y) / 2);
-                raizes.add(new Equacao.Raiz(n-1, n, calculaResutado(media.apply(n-1f, n - 0f))));
+                raizes.add(new Equacao.Raiz(n-1, n, this));
             }
         }
         setRaizes(raizes);
+    }
+
+    public void melhorarRaizes() {
+        getRaizes().stream().parallel().forEach( raiz -> {
+            while (raiz.getIntervaloB() - raiz.getIntervaloA() > Math.pow(10, this.getEpsilon())) {
+                float x = (raiz.getIntervaloA() + raiz.getIntervaloB()) / 2;
+                if (this.sinalResultado(x) == this.sinalResultado(raiz.getIntervaloA()))
+                    raiz.setIntervaloA(x);
+                else
+                    raiz.setIntervaloB(x);
+            }
+        });
+
     }
 
     @Override
@@ -155,14 +169,17 @@ public class Equacao {
         private float intervaloA;
         private float intervaloB;
         private float valor;
+        private Equacao equacao;
+        private static final Function<Raiz, Float> funcaoValor = r -> (r.getIntervaloA() + r.getIntervaloB()) / 2;
 
         public Raiz() {
         }
 
-        public Raiz(float intervaloA, float intervaloB, float valor) {
+        public Raiz(float intervaloA, float intervaloB, Equacao equacao) {
             this.intervaloA = intervaloA;
             this.intervaloB = intervaloB;
-            this.valor = valor;
+            this.equacao = equacao;
+            calculaValor();
         }
 
         public float getIntervaloA() {
@@ -171,6 +188,7 @@ public class Equacao {
 
         public void setIntervaloA(float intervaloA) {
             this.intervaloA = intervaloA;
+            calculaValor();
         }
 
         public float getIntervaloB() {
@@ -179,6 +197,7 @@ public class Equacao {
 
         public void setIntervaloB(float intervaloB) {
             this.intervaloB = intervaloB;
+            calculaValor();
         }
 
         public float getValor() {
@@ -187,6 +206,10 @@ public class Equacao {
 
         public void setValor(float valor) {
             this.valor = valor;
+        }
+
+        private void calculaValor() {
+            this.valor = (getIntervaloA() + getIntervaloB()) /2;
         }
 
         @Override
