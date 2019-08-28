@@ -234,7 +234,7 @@ public class Equacao {
         private void calculaValor() {
             float novoValor = (getIntervaloA() + getIntervaloB()) /2;
             if (novoValor != this.valor) {
-                this.anteriores.add(new Raiz(getIntervaloA(), getIntervaloB(), equacao.calculaResutado(this.valor)));
+                this.anteriores.add(new Raiz(getIntervaloA(), getIntervaloB(), this.valor));
                 this.valor = novoValor;
             }
         }
