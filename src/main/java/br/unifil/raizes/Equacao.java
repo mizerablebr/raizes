@@ -7,8 +7,8 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class Equacao {
-    public static final int inicioTestes = -5;
-    public static final int fimTestes = 5;
+    public static final int inicioTestes = -1000;
+    public static final int fimTestes = 1000;
     private float x5;
     private float x4;
     private float x3;
